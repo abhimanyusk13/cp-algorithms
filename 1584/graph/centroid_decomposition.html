@@ -8042,7 +8042,7 @@ Describe the issue of this article in detail.
 <ul class="metadata page-metadata" data-bi-name="page info" lang="en-us" dir="ltr">
 
   Last update:
-  <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="January 24, 2026 15:58:25 UTC">January 24, 2026</span>&emsp;
+  <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="February 10, 2026 18:32:29 UTC">February 10, 2026</span>&emsp;
 
 <!-- Tags -->
 
@@ -8159,9 +8159,8 @@ Describe the issue of this article in detail.
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="c1">// Collect all distances from the centroid within a subtree</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">get_distances</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">dist</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">distances</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dist</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">K</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w">  </span><span class="c1">// Optimization: don&#39;t go beyond K</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">dist</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">K</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
 <span class="w">    </span><span class="n">distances</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">dist</span><span class="p">);</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">v</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">removed</span><span class="p">[</span><span class="n">u</span><span class="p">])</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
@@ -8170,35 +8169,21 @@ Describe the issue of this article in detail.
 <span class="p">}</span>
 
 <span class="kt">void</span><span class="w"> </span><span class="nf">process_centroid</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">centroid</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// This function can be adapted to solve different problems using centroid decomposition.</span>
-<span class="w">    </span><span class="c1">// In this specific case, we are solving the problem of counting all paths of length K.</span>
-<span class="w">    </span><span class="c1">//</span>
-<span class="w">    </span><span class="c1">// Strategy: For each centroid, we count paths that pass through it.</span>
-<span class="w">    </span><span class="c1">// A path passing through the centroid consists of:</span>
-<span class="w">    </span><span class="c1">// - A vertex in one subtree at distance d1 from the centroid</span>
-<span class="w">    </span><span class="c1">// - A vertex in another subtree at distance d2 from the centroid</span>
-<span class="w">    </span><span class="c1">// - Such that d1 + d2 = K</span>
-
 <span class="w">    </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">all_distances</span><span class="p">;</span>
-<span class="w">    </span><span class="n">all_distances</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">// The centroid itself (distance 0)</span>
+<span class="w">    </span><span class="n">all_distances</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 
-<span class="w">    </span><span class="c1">// Process each subtree of the centroid</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">centroid</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">removed</span><span class="p">[</span><span class="n">u</span><span class="p">])</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
 
 <span class="w">        </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">current_distances</span><span class="p">;</span>
 <span class="w">        </span><span class="n">get_distances</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">centroid</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">current_distances</span><span class="p">);</span>
 
-<span class="w">        </span><span class="c1">// Count paths between current subtree and all previously processed subtrees</span>
-<span class="w">        </span><span class="c1">// For each distance d in current_distances, we need distance K-d in all_distances</span>
 <span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">current_distances</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">K</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="c1">// Count how many vertices are at distance K-d in previous subtrees</span>
 <span class="w">                </span><span class="n">answer</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">count</span><span class="p">(</span><span class="n">all_distances</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">all_distances</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">d</span><span class="p">);</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
 
-<span class="w">        </span><span class="c1">// Add current subtree&#39;s distances to all_distances for next iterations</span>
 <span class="w">        </span><span class="n">all_distances</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">all_distances</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">current_distances</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">current_distances</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -8211,7 +8196,6 @@ Describe the issue of this article in detail.
 
 <span class="w">    </span><span class="n">removed</span><span class="p">[</span><span class="n">centroid</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 
-<span class="w">    </span><span class="c1">// Recursively decompose each subtree</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">adj</span><span class="p">[</span><span class="n">centroid</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">removed</span><span class="p">[</span><span class="n">u</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="n">decompose</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
@@ -8219,6 +8203,7 @@ Describe the issue of this article in detail.
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<p>This template can be adapted to solve different problems using centroid decomposition. In this specific case, it solves the problem of counting all paths of length <span class="arithmatex">$K$</span>. The strategy is: for each centroid, count paths passing through it by finding pairs of vertices in different subtrees at distances <span class="arithmatex">$d_1$</span> and <span class="arithmatex">$d_2$</span> their sum is <span class="arithmatex">$K$</span> (i.e. a path passing through the centroid consists of a vertex in one subtree at distance <span class="arithmatex">$d_1$</span> from the centroid and a vertex in another subtree at distance <span class="arithmatex">$d_2$</span> where <span class="arithmatex">$d_1 + d_2 = K$</span>). For each distance <span class="arithmatex">$d$</span> in the current subtree, the code counts how many vertices are at distance <span class="arithmatex">$K - d$</span> in previous subtrees. The optimization skips distances beyond <span class="arithmatex">$K$</span> to avoid unnecessary recursion.</p>
 <h3 id="building-the-centroid-tree">Building the Centroid Tree<a class="headerlink" href="#building-the-centroid-tree" title="Permanent link">&para;</a></h3>
 <p>If you need to build an explicit centroid tree structure (useful for answering queries):</p>
 <div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">centroid_parent</span><span class="p">[</span><span class="n">MAXN</span><span class="p">];</span>
